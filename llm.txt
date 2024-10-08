@@ -1,0 +1,19 @@
+Used LLM tool: ChatGPT model 4o
+Motivation to use: Finding quicker fixes for frustrating errors.
+How LLM helped: Using more time on learning docker compose instead of browsing pages on how JSON syntax works in Javascript. Felt more motivated to complete the exercise in one sitting, when I had to spend less time on "stupid" issues.
+
+Example prompts used: 
+"I've implemented a RESTful api with python and flask. When I am attempting to host it on Docker, I only get "Recv failure: Connection reset by peer" to my GET requests.
+I've exposed the port on the Dockerfile.
+Below is my code for the python server."
+(the error was simply that I had forgotten to also connect the python server to the virtual network. Probably would have also resolved the issue by looking it up online.)
+
+"when running js code within a docker environment, what is the best way to get and print the server diskspace?"
+(Suggested using a custom-made npm module for this, which I followed instead of running df and parsing its output like I did on the Python server. Whether this is smart design is debatable.)
+
+What kind of mistakes LLM did?
+Misleading or incomplete answers, that filled 80% of what I needed but not everything.
+More than once I used the suggestion provided, got an error, copy-pasted the error into the LLM and then it provided a working version with the issues fixed.
+
+What were things that LLM was not able to provide?
+In this case, I found nothing that the tool wasn't able to help me with. Despite mistakes mentioned above, all issues I wanted to solve with the tool were resolved eventually.

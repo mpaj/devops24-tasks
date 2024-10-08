@@ -1,0 +1,9 @@
+Docker is a tool that enables virtualization with a smaller overhead.
+For example, in this exercise we run a container on top of the "python:3" image.
+The container running this still uses the kernel of the host OS and the CPU and memory resources quite unresticted (unless restrictions are set).
+The image simply contains a debian distribution combined with the latest python, capable of running on any supported docker platform.
+I did not configure host network sharing, so the virtual network "network1" is entirely independent from the host. 
+However, docker containers seem to share the network resources of the host OS and it would be possible for me to connect my containers to a pre-existing external network.
+
+Containers can also use seperate volumes, which are essentially isolated portions of the host filesystem. These have not been implemented here. 
+Likewise, we could share other devices of the host and its environment variables to the containers.
