@@ -1,0 +1,9 @@
+services:
+  nodejs:
+    build: ./js-server
+    #image: node:16-alpine
+    container_name: js-server
+    #restart: unless-stopped
+    ports:
+      - "8199:8199"
+    command: node app-express.js

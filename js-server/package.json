@@ -1,0 +1,16 @@
+{
+    "name": "task1-js-server",
+    "version": "1.0.0",
+    "description": "simple nodejs server",
+    "author": "Mika Pajala",
+    "license": "MIT",
+    "main": "app-express.js",
+    "keywords": [
+        "nodejs",
+        "express"
+    ],
+    "dependencies": {
+        "check-disk-space": "^3.4.0",
+        "express": "^4.21.0"
+    }
+}
