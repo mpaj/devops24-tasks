@@ -25,13 +25,14 @@ const getLocalSystemInfo = async () => {
     allinfo.disk_space = await checkDiskSpace('/');  
 
     allinfo.uptime = os.uptime(); 
+    allinfo.hostname = os.hostname();
     //console.log('Output was:\n', allinfo);
     return allinfo
 }
 
 function getRemoteSystem () {
     return new Promise((resolve, reject) => {
-        http.get('http://flask:5000/status', (res) => {
+        http.get('http://backend-flask:5000/status', (res) => {
           let data = '';
     
           res.on('data', (chunk) => {
@@ -52,15 +53,22 @@ function getRemoteSystem () {
       });
 }
 
+let onTimeOut = false;
+
 app.get('/', async (req, res) => {
+
+  if (!onTimeOut) {
     res.setHeader('Content-Type', 'application/json');
     let service1status = await getLocalSystemInfo();
+    console.log("Sleep flag is ", onTimeOut);
+    console.log("Served by ", service1status.hostname);
     //console.log(info)
     try {
         var service2status = await getRemoteSystem();
-        console.log("remote says:", service2status);
+        //console.log("remote says:", service2status);
     } catch (err) {
         console.error("failed getting remote status: ", err);
+        return;
     }
     const response = {
         "Service":
@@ -79,7 +87,16 @@ app.get('/', async (req, res) => {
             },
     };
     res.json(response);
-    
+    onTimeOut = true;
+    execSync('sleep 2');
+    onTimeOut = false;
+    //setTimeout(( () => {
+    //  console.log("Sleeping for 2000ms!")}), 2000);
+    //  onTimeOut = false;
+  }
+  else {
+    console.log("Server is sleeping!");
+  }
 })
 
 app.listen(LISTENPORT, () => {

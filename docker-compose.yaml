@@ -1,22 +1,50 @@
 services:
-  nodejs:
+  frontend-base:
     build: ./js-server
-    container_name: js-server
-    ports:
-      - "8199:8199"
+    container_name: frontend-base
     command: node app-express.js
     depends_on:
-      - flask
+      - backend-flask
     networks:
       - network1
-  flask:
+
+  frontend1:
+    extends:
+      service: frontend-base
+    container_name: frontend1
+    expose:
+      - "8199"
+  frontend2:
+    extends:
+      service: frontend-base
+    container_name: frontend2
+    expose:
+      - "8199"
+  frontend3:
+    extends:
+      service: frontend-base
+    container_name: frontend3
+    expose:
+      - "8199"
+
+  backend-flask:
     build: ./python-server
-    container_name: python-server
+    container_name: backend-flask
     expose:
       - "5000"
     command: python3 server.py
     networks:
       - network1
+    
+  nginx:
+    build: ./nginx
+    ports:
+      - "8198:8198"
+    networks:
+      - network1
+    depends_on:
+      - frontend-base
+
 networks:
   network1:
     driver: bridge
