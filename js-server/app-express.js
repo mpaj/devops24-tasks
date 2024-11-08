@@ -86,18 +86,45 @@ app.get('/', async (req, res) => {
             "uptime":`${service2status.uptime}`
             },
     };
-    res.json(response);
     onTimeOut = true;
-    execSync('sleep 2');
+    res.json(response);
+    //execSync('sleep 2', );
+    //onTimeOut = false;
+    const start = Date.now();
+    while (Date.now() - start < 2000) {
+        // Busy-wait for 2000 ms
+    }
     onTimeOut = false;
     //setTimeout(( () => {
-    //  console.log("Sleeping for 2000ms!")}), 2000);
+    //  console.log("Slept for 2000ms!")}), 2000);
     //  onTimeOut = false;
   }
   else {
     console.log("Server is sleeping!");
   }
 })
+
+app.post('/stop', (req, res) => {
+  exec('docker stop $(docker ps -q)', (error, stdout, stderr) => {
+      if (error) {
+          console.error(`Error stopping containers: ${stderr}`);
+          return res.status(500).json({ message: 'Error stopping containers' });
+      }
+      console.log(`Stopped containers: ${stdout}`);
+      res.json({ message: 'All running containers have been stopped' });
+  });
+});
+
+app.post('/stop-compose', (req, res) => {
+  execSync('docker compose down', { cwd: '/' }, (error, stdout, stderr) => {
+      if (error) {
+          console.error(`Error stopping docker-compose: ${stderr}`);
+          return res.status(500).json({ message: 'Error stopping docker-compose' });
+      }
+      console.log(`docker-compose down output: ${stdout}`);
+      res.json({ message: 'Docker Compose process has been stopped' });
+  });
+});
 
 app.listen(LISTENPORT, () => {
     console.log(`listening on ${LISTENPORT}`);

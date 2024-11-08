@@ -7,6 +7,8 @@ services:
       - backend-flask
     networks:
       - network1
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
 
   frontend1:
     extends:
@@ -38,10 +40,13 @@ services:
     
   nginx:
     build: ./nginx
+    container_name: nginx_proxy
     ports:
       - "8198:8198"
     networks:
       - network1
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - frontend-base
 

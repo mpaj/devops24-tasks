@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Page</title>
+</head>
+<body>
+    <h2>Data Request Page</h2>
+    <button id="requestDataButton">REQUEST</button>
+    <button id="stopButton">STOP</button>
+    <br><br>
+    <textarea id="responseBox" rows="10" cols="200" readonly></textarea>
+
+    <script>
+        document.getElementById('requestDataButton').addEventListener('click', async function() {
+            try {
+                // get response from one of three backend servers
+                const responses = await Promise.all([
+                    fetch('http://localhost:8198/api/'),
+                ]);
+                const data = await Promise.all(responses.map(res => res.json()));
+
+                // display response
+                document.getElementById('responseBox').value = data.map((item, index) => 
+                    `${JSON.stringify(item)}`
+                );
+            } catch (error) {
+                document.getElementById('responseBox').value = 'Error fetching data';
+                console.error('Error:', error);
+            }
+        });
+        document.getElementById('stopButton').addEventListener('click', async function (params) {
+            console.log("STOP");
+            try {
+                const response = await fetch('/api/stop-compose', { method: 'POST' });
+                const result = await response.json();
+                alert(result.message);
+            } catch (error) {
+                alert('Error stopping Docker Compose');
+                console.error('Error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

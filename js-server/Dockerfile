@@ -9,7 +9,8 @@ WORKDIR $HOME
 COPY package*.json ./
 
 USER root
-RUN apk add --no-cache procps 
+RUN apk update
+RUN apk add --no-cache docker-cli procps 
 #https://stackoverflow.com/questions/48655709/how-can-i-get-process-name-of-specific-pid-with-ps-command-in-alpine 
 RUN npm install 
 
